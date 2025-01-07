@@ -30,6 +30,12 @@ class RandomStrategy extends DialogueStrategy {
     this.castMembers.delete(randomMember);
     return randomMember;
   }
+
+  hasIntent(castMember: ChatInstance): boolean {
+    return Array.from(this.castMembers).some(
+      (member) => member.castMember === castMember
+    );
+  }
 }
 
 export { RandomStrategy };
