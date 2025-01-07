@@ -17,7 +17,6 @@ const generateAgent = (
   // const model =
   //   modelType === "OpenAIChat" ? new OpenAIChat() : new GeminiAIChat();
   const model = new OpenAIChat();
-  console.log(problem);
   return new ChatInstance({
     personality,
     problem,
@@ -36,7 +35,6 @@ const getIncomingMessage = (
     intent: speaker.intent,
     solution: solution.getSolution(),
   };
-  // console.log(returnMessage);
   return returnMessage;
 };
 
@@ -111,7 +109,6 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIo) => {
               newMessage,
               solution
             );
-            console.log(castMember.getPersonality().name, nextAction);
 
             if (nextAction === "speak") {
               communicationStrategy.registerIntent(castMember, "speak");

@@ -79,7 +79,6 @@ export default async function handler(
       }
     }
 
-    console.log(`SOLUTION: ${solution.getSolution()}`);
     res.status(200).json({ response: "hello" });
   } else {
     res.status(405).json({ error: "Method not allowed" });

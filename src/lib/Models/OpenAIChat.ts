@@ -21,14 +21,12 @@ class OpenAIChat extends Model {
     temperature: number;
   }): Promise<string> {
     try {
-      console.log(1);
-      console.log(messages);
       const response = await this.client.chat.completions.create({
         model: "gpt-4o-mini",
         messages: messages,
         temperature: temperature || Math.random() * 0.5 + 0.5,
       });
-      console.log(2);
+
       const content = response.choices[0].message.content;
 
       return content || "Received null content from OpenAI API";
