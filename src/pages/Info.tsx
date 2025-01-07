@@ -16,17 +16,17 @@ const Info: React.FC = () => {
           Back
         </button>
       </div>
-      <p className="text-xs">
+      <div className="text-xs">
         TLDR (your welcome): This is a multi-agent simulation where you can
         customize multiple agents (create personalized versions of chatGPT or
         any other LLM), assign them a communication method, and give them a
         problem. The agents will then communicate with each other to solve the
         problem! The simulation will end when the problem is solved or the
         agents are unable to solve the problem.
-      </p>
+      </div>
 
       <h1 className="my-4">A more detailed dive</h1>
-      <p className="text-xs">
+      <div className="text-xs">
         "These LLMs are so powerful, but I wish I could customize them, better
         yet, get them to work on something together." After stumbling upon the
         idea of agents, I was really intrigued on the posabilites. If one agent
@@ -37,50 +37,52 @@ const Info: React.FC = () => {
         different models, communication methods, and personalities. The
         simulation will end when the problem is solved or the agents are unable
         to solve the problem.
-      </p>
-      <p className="text-xs py-3">
+      </div>
+      <div className="text-xs py-3">
         As you could imagine, the possibilities are endless! You could create a
         team of engineers to solve a programming problem, a cast of screen
         writers to write a script, or even a group of chefs to create a recipe.
         The simulation is a great way to see how different agents can work
         together to solve a problem.
-      </p>
+      </div>
 
       <h1 className="mb-4 mt-10 text-2xl ">How was this built?</h1>
-      <p className="text-xs ">
+      <div className="text-xs ">
         The main issue with customization of these prebuilt models comes down to
         the prompting (which was a pain). Initally I told each instance of the
         LLM that they were a brain; they would take on the personality and name
         provided to them by the user and then they would be given a problem to
         solve. I would them enter them into a communication method whether that
         be random or[ADD HERE]. I would then use prompts such as the following:
-        <ul className="list-disc pl-10 my-3 py-5 bg-secondary rounded text-secHighlight">
-          <li>
-            I must respond with exactly one of the options, without saying
-            anything else ["SPEAK", "LISTEN", "SPEAKWITHEDIT"].
-          </li>
-          <li>What would I like to do next?</li>
-          <li>I can see that this is the current solution:</li>
-        </ul>
+      </div>
+      <ul className="list-disc pl-10 my-3 py-5 text-xs bg-secondary rounded text-secHighlight">
+        <li>
+          I must respond with exactly one of the options, without saying
+          anything else ["SPEAK", "LISTEN", "SPEAKWITHEDIT"].
+        </li>
+        <li>What would I like to do next?</li>
+        <li>I can see that this is the current solution:</li>
+      </ul>
+      <div className="text-xs ">
         By using prompts like this, I was able to avoid using system prompts
         during conversation which was a problem I was running into when using
         Gemini. Before this iteration I would say the lines above to direct the
         agents. "You must respond with...", "What would you like to do...". None
         the less the results seem to be similar and this was more of a personal
         preference in favor of it working for the free model haha.
-      </p>
-      <p className="text-xs py-3">
+      </div>
+      <div className="text-xs py-3">
         The prompt to initiate the model was strightforwards, however the prompt
         used to facilitate conversation was the kicker. Here is the beautiful
         prompt:
-      </p>
+      </div>
       <div className="bg-secondary p-8 text-xs rounded text-secHighlight">
         <span>
-          <p className="mb-3">
+          <div className="mb-3">
             I must respond with exactly one of the options, without saying
             anything else ["SPEAK", "LISTEN", "SPEAKWITHEDIT"]. Im going to read
             what each option means and respond with what I want to do
-          </p>
+          </div>
           <span>Say "SPEAK" if:</span>
           <ul className="list-disc pl-5 my-3">
             <li>
@@ -132,7 +134,7 @@ const Info: React.FC = () => {
           </ul>
         </span>
       </div>
-      <p className="text-xs py-3">
+      <div className="text-xs py-3">
         I called this the LISTEN prompt as it was given to each agent after
         feeding them the most recent message sent. This way each model was able
         to make a decision on what to do next (what I think is an unconscious
@@ -140,15 +142,15 @@ const Info: React.FC = () => {
         communication method, this prompt is used to direct the conversation in
         a way humans would have a conversation, in hopes the agents will work
         together in solving the problem at hand.
-      </p>
-      <p className="text-xs py-3">
+      </div>
+      <div className="text-xs py-3">
         This project was built using Next.js, TypeScript, Tailwind CSS, and
         Socket.IO. The project is hosted on Vercel and the code is available on
         GitHub. The project currently uses gemini-1.5-flash API to generate
         responses for the agents. The project uses Socket.IO to create a
         real-time connection between the client and server. The project uses
         Tailwind CSS for styling and Next.js for routing.
-      </p>
+      </div>
     </div>
   );
 };

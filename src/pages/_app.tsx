@@ -17,9 +17,9 @@ const MyApp: AppType = ({ Component }) => {
         <meta name="description" content="Multi-Agent Simulation" />
         <meta
           name="keywords"
-          content="multi-agent, simulation, AI, technology"
+          content="multi-agent, simulation, AI, technology, agents, LLM, large language model"
         />
-        <meta name="author" content="Your Name" />
+        <meta name="author" content="Kai Kit Jeffrey Chan" />
 
         {/* <meta property="og:type" content="website" />
         <meta property="og:title" content="Multi-Agent Simulation" />

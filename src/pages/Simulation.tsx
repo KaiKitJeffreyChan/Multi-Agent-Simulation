@@ -29,6 +29,13 @@ const Simulation: React.FC = () => {
   });
 
   useEffect(() => {
+    const messageContainer = document.getElementById("messageContainer");
+    if (messageContainer) {
+      messageContainer.scrollTop = messageContainer.scrollHeight;
+    }
+  }, [messageStream]);
+
+  useEffect(() => {
     setMessages(messageStream);
     const newSocket = ClientIO();
     setSocket(newSocket);
@@ -54,7 +61,10 @@ const Simulation: React.FC = () => {
     <div className="h-full bg-primary font-shareTechMono text-white ">
       <div className="grid grid-cols-[50%_50%]">
         <div className="h-screen col-span-1 overflow-hidden p-10">
-          <div className="overflow-y-auto no-scrollbar bg-secondary h-full rounded">
+          <div
+            className="overflow-y-auto no-scrollbar bg-secondary h-full rounded"
+            id="messageContainer"
+          >
             <div className="p-5">
               {messageStream.map((msg: Message, index: number) => (
                 <div className="mb-5" key={index}>
@@ -70,6 +80,7 @@ const Simulation: React.FC = () => {
             </div>
           </div>
         </div>
+
         <div className="col-span-1 p-10">
           <h2>Solution:</h2>
           <div className="overflow-auto no-scrollbar text-wrap my-5">
