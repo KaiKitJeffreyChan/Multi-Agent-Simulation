@@ -1,11 +1,10 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
 import { Server as IOServer } from "socket.io";
 import { NextApiResponseServerIo } from "../../types/GeneralTypes";
 import { ChatInstance } from "../../lib/ChatInstance";
 import { Personality } from "../../types/GeneralTypes";
 import OpenAIChat from "../../lib/Models/OpenAIChat";
 import GeminiAIChat from "../../lib/Models/GeminiAIChat";
-import { personalities, problem } from "../../lib/Personalities/personalities";
 import { Intent } from "@/lib/Strategy/DialogueStrategy";
 import { Solution } from "@/lib/Solution/Solution";
 import { RandomStrategy } from "../../lib/Strategy/RandomStrategy";
@@ -17,7 +16,7 @@ const generateAgent = (
 ) => {
   // const model =
   //   modelType === "OpenAIChat" ? new OpenAIChat() : new GeminiAIChat();
-  const model = new GeminiAIChat();
+  const model = new OpenAIChat();
   return new ChatInstance({
     personality,
     problem,
@@ -36,7 +35,6 @@ const getIncomingMessage = (
     intent: speaker.intent,
     solution: solution.getSolution(),
   };
-  // console.log(returnMessage);
   return returnMessage;
 };
 
@@ -56,9 +54,9 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIo) => {
         });
       });
     }
-    const { model, communicationMethod } = req.body;
+    const { model, communicationMethod, agents, problem } = req.body;
 
-    const castMembers: ChatInstance[] = personalities.map((personality) =>
+    const castMembers: ChatInstance[] = agents.map((personality: Personality) =>
       generateAgent(personality, problem, model)
     );
 
@@ -103,14 +101,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIo) => {
         socket.emit("solution", solution.getSolution());
 
         for (const castMember of castMembers) {
-          await new Promise((resolve) => setTimeout(resolve, 10000));
+          // Need this for Gemini will fail otherwise
+          // await new Promise((resolve) => setTimeout(resolve, 8000));
           if (castMember !== speaker.castMember) {
             const nextAction: string = await castMember.listen(
               speaker.castMember.getPersonality().name,
               newMessage,
               solution
             );
-            console.log(castMember.getPersonality().name, nextAction);
 
             if (nextAction === "speak") {
               communicationStrategy.registerIntent(castMember, "speak");
@@ -121,8 +119,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIo) => {
             }
           }
         }
+        const allListening = castMembers.every(
+          (castMember) => !communicationStrategy.hasIntent(castMember)
+        );
+
+        if (allListening) {
+          socket.disconnect();
+          break;
+        }
       }
     });
+
     res.status(200).end();
   } else {
     res.setHeader("Allow", ["POST"]);

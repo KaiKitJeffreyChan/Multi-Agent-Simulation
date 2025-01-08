@@ -18,6 +18,14 @@ export class ChatInstance {
   I must respond with exactly one of the options, without saying anything else ["SPEAK", "LISTEN", "SPEAKWITHEDIT"]. 
   Im going to read what each option means and respond with what I want to do
 
+  Say "SPEAKWITHEDIT" if:
+  - The solution is empty
+  - I am considering contributing a solution or improving upon an existing one.
+  - The current solution is incomplete or could be enhanced with a better idea or perspective.
+  - Someone else in the group has shared an idea worth incorporating, and I want to highlight or integrate it.
+  - There is consensus or discussion that suggests the solution needs to evolve or change.
+  - I want to refine, clarify, or optimize the solution to make it more effective.
+
   Say "SPEAK" if:
   - I want to continue the conversation; the conversation will end if all participants say "LISTEN".
   - I have something new to say or a new idea to introduce.
@@ -31,13 +39,7 @@ export class ChatInstance {
   - The conversation is wrapping up.
   - I have nothing new to say.
   - The conversation has been going on for a while;  I get tired the longer the conversation goes on
-  
-  Say "SPEAKWITHEDIT" if:
-  - I am considering contributing a solution or improving upon an existing one.
-  - The current solution is incomplete or could be enhanced with a better idea or perspective.
-  - Someone else in the group has shared an idea worth incorporating, and I want to highlight or integrate it.
-  - There is consensus or discussion that suggests the solution needs to evolve or change.
-  - I want to refine, clarify, or optimize the solution to make it more effective.
+
   `;
 
   private LISTEN_USER_PROMPT = `What would I like to do next? Respond with one of the options ["SPEAK", "LISTEN", "SPEAKWITHEDIT"]`;

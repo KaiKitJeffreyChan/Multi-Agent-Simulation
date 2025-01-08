@@ -26,6 +26,7 @@ class OpenAIChat extends Model {
         messages: messages,
         temperature: temperature || Math.random() * 0.5 + 0.5,
       });
+
       const content = response.choices[0].message.content;
 
       return content || "Received null content from OpenAI API";
