@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Agent from "./components/Agent";
 import useForm from "./hooks/useForm";
 import Instructions from "./components/Instructions";
+import { set } from "react-hook-form";
 
 const FormComponent: React.FC = () => {
   const [message, setMessage] = useState<string>("");
@@ -52,7 +53,18 @@ const FormComponent: React.FC = () => {
             />
           ))}
         </div>
-        <form onSubmit={handleSubmit}>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault();
+            if (agents.length >= 2 && problem) {
+              handleSubmit(event);
+            } else if (agents.length < 2) {
+              setMessage("Please add at least 2 agents!!!");
+            } else if (!problem) {
+              setMessage("Please fill out the problem statement!!!");
+            }
+          }}
+        >
           <div className="flex flex-col text-secHighlight">
             {agents.length >= 5 ? (
               <p className="my-6">
