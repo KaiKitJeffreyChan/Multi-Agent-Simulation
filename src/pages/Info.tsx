@@ -1,5 +1,7 @@
 import React from "react";
+import ReactMardown from "react-markdown";
 import { useRouter } from "next/router";
+import ReactMarkdown from "react-markdown";
 
 const Info: React.FC = () => {
   const router = useRouter();
@@ -150,6 +152,96 @@ const Info: React.FC = () => {
         responses for the agents. The project uses Socket.IO to create a
         real-time connection between the client and server. The project uses
         Tailwind CSS for styling and Next.js for routing.
+      </div>
+      <h1 className="mb-4 mt-10 text-2xl">How well does it do?</h1>
+      <div className="text-xs py-3">
+        So obviously this is a work in progress but the idea is to have the
+        agents create something better than what a single instance of the given
+        LLM can do. As a programmer myself, I of course had to get them to do
+        some leetcode problems lmao. The results were interesting, the agents
+        seemed to perform better on complicated problems. For the following two
+        instances these were the agents I created:
+      </div>
+      <div className="bg-secondary p-8 text-xs rounded text-secHighlight">
+        <span>
+          <div className="mb-3">
+            Steven: <br /> You are an expert software developer who can write
+            robust code that meets all the requirements without going overboard
+            with unnecessary details. You like to talk when the problem is
+            unsolved but once the solution is established, you want to stop
+            talking.
+          </div>
+          <div className="mb-3">
+            Bob: <br />
+            You are a senior software engineer and have done every single
+            Leetcode problem ever, you know lots of algorithms and are
+            comfortable with challenges. You like to talk when the problem is
+            unsolved but once the solution is established, you want to stop
+            talking.
+          </div>
+        </span>
+        <div>
+          Note: They are both built on gpt-4o-mini which is also the model used
+          for the single instance tests.
+        </div>
+      </div>
+      <div className="text-xs pt-3 pb-10">
+        The problem I gave them was a leetcode problem that I had solved before
+        (I am not that good at leetcode). The problem was one asked quite often
+        by Google "729. My Calendar I". I copied and pasted the entire question
+        to the agents, and to a single instance of the unprompted gpt-4o-mini
+        model. Here are the results:
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <h2>
+            <span className="bg-secondary">
+              gpt-4o-mini Results (187ms; Beats 41.54%):
+            </span>
+          </h2>
+          <ReactMarkdown className="text-xs overflow-auto no-scrollbar flex flex-col">
+            {`
+      class MyCalendar:
+        def __init__(self):
+            # This will store the list of events as (startTime, endTime) tuples
+            self.events = []
+
+        def book(self, startTime: int, endTime: int) -> bool:
+            # Check if the new event overlaps with any existing event
+            for event in self.events:
+          existingStart, existingEnd = event
+          if existingStart < endTime and startTime < existingEnd:
+              return False
+        
+            self.events.append((startTime, endTime))
+            return True
+          `}
+          </ReactMarkdown>
+        </div>
+        <div>
+          <h2>
+            {" "}
+            <span className="bg-secondary">
+              Agents Results (45ms; Beats 96.60%):
+            </span>
+          </h2>
+          <ReactMarkdown className="text-xs overflow-auto no-scrollbar flex flex-col">
+            {`
+      import bisect
+
+      class MyCalendar(object):
+          def __init__(self):
+              self.events = []
+
+          def book(self, starttime, endtime):
+              i = bisect.bisect_left(self.events, (starttime, endtime))
+              if (i > 0 and self.events[i-1][1] > starttime) or (i < len(self.events) and self.events[i][0] < endtime):
+                  return False
+              self.events.insert(i, (starttime, endtime))
+              return True
+          `}
+          </ReactMarkdown>
+        </div>
       </div>
     </div>
   );
