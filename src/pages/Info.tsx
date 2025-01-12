@@ -1,5 +1,4 @@
 import React from "react";
-import ReactMardown from "react-markdown";
 import { useRouter } from "next/router";
 import ReactMarkdown from "react-markdown";
 
@@ -10,7 +9,7 @@ const Info: React.FC = () => {
       <div className="flex justify-between items-center">
         <h1 className="my-4 text-2xl">
           Wow you were curious enought to press this!
-        </h1>
+          Wow you were curious enough to press this!
         <button
           className="bg-secondary text-xs p-2 rounded"
           onClick={() => router.push("/Home")}
@@ -20,18 +19,19 @@ const Info: React.FC = () => {
       </div>
       <div className="text-xs">
         TLDR (your welcome): This is a multi-agent simulation where you can
+        TLDR (you're welcome): This is a multi-agent simulation where you can
         customize multiple agents (create personalized versions of chatGPT or
         any other LLM), assign them a communication method, and give them a
         problem. The agents will then communicate with each other to solve the
         problem! The simulation will end when the problem is solved or the
         agents are unable to solve the problem.
-      </div>
 
       <h1 className="my-4">A more detailed dive</h1>
       <div className="text-xs">
         "These LLMs are so powerful, but I wish I could customize them, better
-        yet, get them to work on something together." After stumbling upon the
-        idea of agents, I was really intrigued on the posabilites. If one agent
+        &quot;These LLMs are so powerful, but I wish I could customize them, better
+        yet, get them to work on something together.&quot; After stumbling upon the
+        idea of agents, I was really intrigued on the possibilities. If one agent
         could do so much, what could multiple agents do? This is where the idea
         of a multi-agent simulation came to be. The idea is simple, create
         multiple agents, give them a problem, and let them communicate with each
@@ -39,7 +39,6 @@ const Info: React.FC = () => {
         different models, communication methods, and personalities. The
         simulation will end when the problem is solved or the agents are unable
         to solve the problem.
-      </div>
       <div className="text-xs py-3">
         As you could imagine, the possibilities are endless! You could create a
         team of engineers to solve a programming problem, a cast of screen
@@ -60,8 +59,8 @@ const Info: React.FC = () => {
       <ul className="list-disc pl-10 my-3 py-5 text-xs bg-secondary rounded text-secHighlight">
         <li>
           I must respond with exactly one of the options, without saying
-          anything else ["SPEAK", "LISTEN", "SPEAKWITHEDIT"].
-        </li>
+          I must respond with exactly one of the options, without saying
+          anything else [&quot;SPEAK&quot;, &quot;LISTEN&quot;, &quot;SPEAKWITHEDIT&quot;].
         <li>What would I like to do next?</li>
         <li>I can see that this is the current solution:</li>
       </ul>
@@ -82,9 +81,9 @@ const Info: React.FC = () => {
         <span>
           <div className="mb-3">
             I must respond with exactly one of the options, without saying
-            anything else ["SPEAK", "LISTEN", "SPEAKWITHEDIT"]. Im going to read
+            I must respond with exactly one of the options, without saying
+            anything else [&quot;SPEAK&quot;, &quot;LISTEN&quot;, &quot;SPEAKWITHEDIT&quot;]. I'm going to read
             what each option means and respond with what I want to do
-          </div>
           <span>Say "SPEAK" if:</span>
           <ul className="list-disc pl-5 my-3">
             <li>
@@ -108,7 +107,6 @@ const Info: React.FC = () => {
             <li>
               {" "}
               The conversation has been going on for a while; I get tired the
-              longer the conversation goes on
             </li>
           </ul>
           <span>Say "SPEAKWITHEDIT" if:</span>
@@ -239,6 +237,90 @@ const Info: React.FC = () => {
                   return False
               self.events.insert(i, (starttime, endtime))
               return True
+          `}
+          </ReactMarkdown>
+        </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <h2>
+            <span className="bg-secondary">
+              gpt-4o-mini Results (3948ms; Beats 36.00%):
+            </span>
+          </h2>
+          <ReactMarkdown className="text-xs overflow-auto no-scrollbar flex flex-col">
+            {`
+from collections import deque
+
+class Solution(object):
+    def racecar(self, target):
+
+        # BFS queue: stores (position, speed, steps)
+        queue = deque([(0, 1, 0)])
+        visited = set((0, 1))  # Set to track visited (position, speed) pairs
+
+        while queue:
+            position, speed, steps = queue.popleft()
+
+            # If we have reached the target position, return the number of steps
+            if position == target:
+                return steps
+
+            # 1. Try to accelerate (A): new position and speed
+            new_position = position + speed
+            new_speed = speed * 2
+            if (new_position, new_speed) not in visited:
+                visited.add((new_position, new_speed))
+                queue.append((new_position, new_speed, steps + 1))
+
+            # 2. Try to reverse (R): flip the direction of speed
+            new_speed = -1 if speed > 0 else 1
+            if (position, new_speed) not in visited:
+                visited.add((position, new_speed))
+                queue.append((position, new_speed, steps + 1))
+
+          `}
+          </ReactMarkdown>
+        </div>
+        <div>
+          <h2>
+            {" "}
+            <span className="bg-secondary">
+              Agents Results (1017ms; Beats 44.00%):
+            </span>
+          </h2>
+          <ReactMarkdown className="text-xs overflow-auto no-scrollbar flex flex-col">
+            {`
+from collections import deque
+
+class Solution(object):
+    def racecar(self, target):
+
+        # BFS queue: (position, speed, steps)
+        queue = deque([(0, 1, 0)])
+        visited = set()  # Set to track visited (position, speed) pairs
+        max_position = 2 * target  # Limit the explored positions to avoid unnecessary computation
+
+        while queue:
+            position, speed, steps = queue.popleft()
+
+            # If we have reached the target position, return the number of steps
+            if position == target:
+                return steps
+
+            # Accelerate: move to a new position with double the speed
+            new_position = position + speed
+            new_speed = speed * 2
+            if abs(new_position) <= max_position and (new_position, new_speed) not in visited:
+                visited.add((new_position, new_speed))
+                queue.append((new_position, new_speed, steps + 1))
+
+            # Reverse: change direction of speed
+            new_speed = -1 if speed > 0 else 1
+            if (position, new_speed) not in visited:
+                visited.add((position, new_speed))
+                queue.append((position, new_speed, steps + 1))
+
           `}
           </ReactMarkdown>
         </div>
