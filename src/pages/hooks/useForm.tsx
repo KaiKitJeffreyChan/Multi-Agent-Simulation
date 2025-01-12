@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import axios from "axios";
 
 export interface AgentI {
@@ -14,57 +14,88 @@ const useForm = () => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
-  const submitAgent = (name: string, description: string) => {
-    // This needs to be formatted to be used as a key in the backend Open ai fails with spaces in names
+  /**
+   * Adds a new agent to the list.
+   * Name is formatted to remove spaces.
+   */
+  const submitAgent = useCallback((name: string, description: string) => {
+    if (!name.trim() || !description.trim()) {
+      setError("Name and description cannot be empty.");
+      return;
+    }
     const formattedName = name.replace(/\s+/g, "_");
-    setAgents([...agents, { name: formattedName, description }]);
-  };
+    setAgents((prevAgents) => [
+      ...prevAgents,
+      { name: formattedName, description },
+    ]);
+    setName("");
+    setDescription("");
+  }, []);
 
-  // Remove an agent from the list
-  const removeAgent = (name: string, description: string) => {
-    setAgents(
-      agents.filter(
+  /**
+   * Removes an agent from the list.
+   */
+  const removeAgent = useCallback((name: string, description: string) => {
+    setAgents((prevAgents) =>
+      prevAgents.filter(
         (agent) => agent.name !== name || agent.description !== description
       )
     );
-  };
+  }, []);
 
-  // Submit form with dynamic extra data
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setLoading(true);
-    setError(null);
+  /**
+   * Submits the form with agent data and problem statement.
+   * Handles errors and loading states properly.
+   */
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setLoading(true);
+      setError(null);
 
-    const data = {
-      model: "GeminiAIChat",
-      agents,
-      communicationMethod: "",
-      problem,
-    };
+      if (agents.length < 2) {
+        setError("Please add at least two agents.");
+        setLoading(false);
+        return;
+      }
 
-    try {
-      const response = await axios.post("/api/simulation", data);
-      return response.data;
-    } catch (err: any) {
-      setError(err.response?.data?.message || "An error occurred");
-    } finally {
-      setLoading(false);
-    }
-  };
+      if (!problem.trim()) {
+        setError("Problem statement cannot be empty.");
+        setLoading(false);
+        return;
+      }
+
+      const data = {
+        model: "GeminiAIChat",
+        agents,
+        communicationMethod: "",
+        problem,
+      };
+
+      try {
+        const response = await axios.post("/api/simulation", data);
+        return response.data;
+      } catch (err: any) {
+        setError(err.response?.data?.message || "An error occurred");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [agents, problem]
+  );
 
   return {
     agents,
     problem,
     loading,
     error,
+    name,
+    description,
     handleSubmit,
     submitAgent,
     removeAgent,
     setProblem,
-    setAgents,
-    name,
     setName,
-    description,
     setDescription,
   };
 };
