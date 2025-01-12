@@ -18,9 +18,9 @@ const Info: React.FC = () => {
         </button>
       </div>
       <div className="text-xs">
-        TLDR (you're welcome): This is a multi-agent simulation where you can
-        customize multiple agents (create personalized versions of chatGPT or
-        any other LLM), assign them a communication method, and give them a
+        TLDR (you&apos;re welcome): This is a multi-agent simulation where you
+        can customize multiple agents (create personalized versions of chatGPT
+        or any other LLM), assign them a communication method, and give them a
         problem. The agents will then communicate with each other to solve the
         problem! The simulation will end when the problem is solved or the
         agents are unable to solve the problem.
@@ -28,7 +28,6 @@ const Info: React.FC = () => {
 
       <h1 className="my-4">A more detailed dive</h1>
       <div className="text-xs">
-        "These LLMs are so powerful, but I wish I could customize them, better
         &quot;These LLMs are so powerful, but I wish I could customize them,
         better yet, get them to work on something together.&quot; After
         stumbling upon the idea of agents, I was really intrigued on the
@@ -51,10 +50,10 @@ const Info: React.FC = () => {
       <h1 className="mb-4 mt-10 text-2xl ">How was this built?</h1>
       <div className="text-xs ">
         The main issue with customization of these prebuilt models comes down to
-        the prompting (which was a pain). Initally I told each instance of the
+        the prompting (which was a pain). Initially I told each instance of the
         LLM that they were a brain; they would take on the personality and name
         provided to them by the user and then they would be given a problem to
-        solve. I would them enter them into a communication method whether that
+        solve. I would then enter them into a communication method whether that
         be random or[ADD HERE]. I would then use prompts such as the following:
       </div>
       <ul className="list-disc pl-10 my-3 py-5 text-xs bg-secondary rounded text-secHighlight">
@@ -70,14 +69,15 @@ const Info: React.FC = () => {
         By using prompts like this, I was able to avoid using system prompts
         during conversation which was a problem I was running into when using
         Gemini. Before this iteration I would say the lines above to direct the
-        agents. "You must respond with...", "What would you like to do...". None
-        the less the results seem to be similar and this was more of a personal
-        preference in favor of it working for the free model haha.
+        agents. &quot;You must respond with...&quot;, &quot;What would you like
+        to do...&quot;. Nonetheless, the results seem to be similar and this was
+        more of a personal preference in favor of it working for the free model
+        haha.
       </div>
       <div className="text-xs py-3">
-        The prompt to initiate the model was strightforwards, however the prompt
-        used to facilitate conversation was the kicker. Here is the beautiful
-        prompt:
+        The prompt to initiate the model was straightforward; however, the
+        prompt used to facilitate conversation was the kicker. Here is the
+        beautiful prompt:
       </div>
       <div className="bg-secondary p-8 text-xs rounded text-secHighlight">
         <span>
@@ -85,14 +85,14 @@ const Info: React.FC = () => {
             I must respond with exactly one of the options, without saying I
             must respond with exactly one of the options, without saying
             anything else [&quot;SPEAK&quot;, &quot;LISTEN&quot;,
-            &quot;SPEAKWITHEDIT&quot;]. I'm going to read what each option means
-            and respond with what I want to do
+            &quot;SPEAKWITHEDIT&quot;]. I&apos;m going to read what each option
+            means and respond with what I want to do
           </div>
-          <span>Say "SPEAK" if:</span>
+          <span>Say &quot;SPEAK&quot; if:</span>
           <ul className="list-disc pl-5 my-3">
             <li>
               I want to continue the conversation; the conversation will end if
-              all participants say "LISTEN".
+              all participants say &quot;LISTEN&quot;.
             </li>
             <li>I have something new to say or a new idea to introduce.</li>
             <li> I want to speak without changing the solution. </li>
@@ -103,17 +103,16 @@ const Info: React.FC = () => {
             </li>
             <li>I want to respond to a question or comment.</li>
           </ul>
-          <span>Say "LISTEN" if:</span>
+          <span>Say &quot;LISTEN&quot; if:</span>
           <ul className="list-disc pl-5 my-3">
-            <li> I are bored or don't find the topic interesting.</li>
+            <li> I am bored or don&apos;t find the topic interesting.</li>
             <li> The conversation is wrapping up.</li>
             <li> I have nothing new to say.</li>
             <li>
-              {" "}
               The conversation has been going on for a while; I get tired the
             </li>
           </ul>
-          <span>Say "SPEAKWITHEDIT" if:</span>
+          <span>Say &quot;SPEAKWITHEDIT&quot; if:</span>
           <ul className="list-disc pl-5 my-3">
             <li>
               I am considering contributing a solution or improving upon an
@@ -190,9 +189,9 @@ const Info: React.FC = () => {
       <div className="text-xs pt-3 pb-10">
         The problem I gave them was a leetcode problem that I had solved before
         (I am not that good at leetcode). The problem was one asked quite often
-        by Google "729. My Calendar I". I copied and pasted the entire question
-        to the agents, and to a single instance of the unprompted gpt-4o-mini
-        model. Here are the results:
+        by Google &quot;729. My Calendar I&quot;. I copied and pasted the entire
+        question to the agents, and to a single instance of the unprompted
+        gpt-4o-mini model. Here are the results:
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div>
