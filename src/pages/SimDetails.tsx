@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import Agent from "./components/Agent";
-import useForm from "./hooks/useForm";
-import Instructions from "./components/Instructions";
+import Agent from "../components/Agent";
+import useForm from "../hooks/useForm";
+import Instructions from "../components/Instructions";
 import { useRouter } from "next/router";
 
-const FormComponent: React.FC = () => {
+const SimDetails: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [showInstructions, setShowInstructions] = useState<boolean>(true);
 
@@ -155,4 +155,4 @@ const FormComponent: React.FC = () => {
   );
 };
 
-export default FormComponent;
+export default SimDetails;
