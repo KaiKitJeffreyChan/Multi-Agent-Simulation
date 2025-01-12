@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import Agent from "./components/Agent";
-import useForm from "./hooks/useForm";
-import Instructions from "./components/Instructions";
-import { set } from "react-hook-form";
+import Agent from "../components/Agent";
+import useForm from "../hooks/useForm";
+import Instructions from "../components/Instructions";
+import { useRouter } from "next/router";
 
 const FormComponent: React.FC = () => {
   const [message, setMessage] = useState<string>("");
@@ -22,6 +22,8 @@ const FormComponent: React.FC = () => {
     setName,
     setDescription,
   } = useForm();
+
+  const router = useRouter();
 
   // Clear message after 3 seconds
   useEffect(() => {
@@ -55,6 +57,7 @@ const FormComponent: React.FC = () => {
         </div>
         <form
           onSubmit={(event) => {
+            router.push("/Simulation");
             event.preventDefault();
             if (agents.length >= 2 && problem) {
               handleSubmit(event);
