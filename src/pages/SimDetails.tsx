@@ -57,10 +57,10 @@ const FormComponent: React.FC = () => {
         </div>
         <form
           onSubmit={(event) => {
-            router.push("/Simulation");
             event.preventDefault();
             if (agents.length >= 2 && problem) {
               handleSubmit(event);
+              router.push("/Simulation");
             } else if (agents.length < 2) {
               setMessage("Please add at least 2 agents!!!");
             } else if (!problem) {
