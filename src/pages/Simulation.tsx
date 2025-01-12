@@ -1,32 +1,26 @@
-import { useEffect, useState } from "react";
-import { io as ClientIO, Socket } from "socket.io-client";
+import React, { useEffect, useState } from "react";
+import ClientIO, { Socket } from "socket.io-client";
 import ReactMarkdown from "react-markdown";
-import FormComponent from "./SimDetails";
 
-type Message = {
+interface Message {
   speaker: string;
   message: string;
-};
+  intent: string;
+  solution: string;
+}
 
-type Data = {
+interface Data {
   model: string;
   communicationMethod: string;
   personalities: { name: string; description: string }[];
   problem: string;
-};
+}
 
 const Simulation: React.FC = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [messageStream, setMessages] = useState<Message[]>([]);
   const [solution, setSolution] = useState<string | null>(null);
   const [isComplete, setIsComplete] = useState<boolean>(false);
-  const [data, setData] = useState<Data>({
-    model: "",
-    communicationMethod: "",
-    personalities: [],
-    problem: "",
-  });
 
   useEffect(() => {
     const messageContainer = document.getElementById("messageContainer");
@@ -36,7 +30,6 @@ const Simulation: React.FC = () => {
   }, [messageStream]);
 
   useEffect(() => {
-    setMessages(messageStream);
     const newSocket = ClientIO();
     setSocket(newSocket);
 
@@ -55,7 +48,7 @@ const Simulation: React.FC = () => {
     return () => {
       newSocket.disconnect();
     };
-  }, []);
+  }, []); // No dependencies needed here
 
   return (
     <div className="h-full bg-primary font-shareTechMono text-white ">
