@@ -7,7 +7,8 @@ import { useRouter } from "next/router";
 const FormComponent: React.FC = () => {
   const [message, setMessage] = useState<string>("");
   const [showInstructions, setShowInstructions] = useState<boolean>(true);
-  // Custom hook initialization with form state
+
+  // Destructure the custom hook
   const {
     agents,
     problem,
@@ -27,23 +28,26 @@ const FormComponent: React.FC = () => {
 
   // Clear message after 3 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      setMessage("");
-    }, 3000);
+    if (message) {
+      const timer = setTimeout(() => {
+        setMessage("");
+      }, 3000);
 
-    return () => clearInterval(interval);
+      return () => clearTimeout(timer);
+    }
   }, [message]);
 
   return (
     <div className="relative min-h-screen bg-primary">
-      {showInstructions ? (
+      {showInstructions && (
         <Instructions setShowInstructions={setShowInstructions} />
-      ) : null}
+      )}
       <div
         className={`sm:p-32 min-h-screen px-10 py-24 flex flex-col text-secHighlight font-shareTechMono ${
           showInstructions ? "opacity-60" : ""
         }`}
       >
+        {/* Current Cast Section */}
         <div className="flex items-center flex-wrap cursor-default gap-y-1">
           <p className="text-secHighlight text-lg mr-2">Current Cast:</p>
           {agents.map((agent) => (
@@ -55,23 +59,27 @@ const FormComponent: React.FC = () => {
             />
           ))}
         </div>
+
+        {/* Form Section */}
         <form
           onSubmit={(event) => {
             event.preventDefault();
             if (agents.length >= 2 && problem) {
-              handleSubmit(event);
-              router.push("/Simulation");
+              handleSubmit(event).then(() => {
+                router.push("/Simulation");
+              });
             } else if (agents.length < 2) {
-              setMessage("Please add at least 2 agents!!!");
+              setMessage("Please add at least 2 agents!");
             } else if (!problem) {
-              setMessage("Please fill out the problem statement!!!");
+              setMessage("Please fill out the problem statement!");
             }
           }}
         >
           <div className="flex flex-col text-secHighlight">
+            {/* Agent Input Section */}
             {agents.length >= 5 ? (
               <p className="my-6">
-                We do not allow more agents at the time, sorry!
+                We do not allow more agents at this time, sorry!
               </p>
             ) : (
               <div>
@@ -97,16 +105,18 @@ const FormComponent: React.FC = () => {
                   ></textarea>
                 </div>
                 <div className="flex justify-between items-center">
-                  <div className="text-xs bg-red-500 px-2">{message}</div>
+                  {message && (
+                    <div className="text-xs bg-red-500 px-2">{message}</div>
+                  )}
                   <button
                     type="button"
                     onClick={() => {
-                      if (name && description) {
+                      if (name.trim() && description.trim()) {
                         submitAgent(name, description);
                         setName("");
                         setDescription("");
                       } else {
-                        setMessage("Please fill out all fields!!!");
+                        setMessage("Please fill out all fields!");
                       }
                     }}
                     className="my-3 px-3 py-1 rounded bg-secondary hover:bg-primHighlight hover:text-white"
@@ -116,6 +126,8 @@ const FormComponent: React.FC = () => {
                 </div>
               </div>
             )}
+
+            {/* Problem Statement Section */}
             <div className="flex flex-col">
               <label className="my-1">Problem Statement:</label>
               <textarea
@@ -127,12 +139,22 @@ const FormComponent: React.FC = () => {
               ></textarea>
             </div>
           </div>
+
+          {/* Submit Button */}
           <button
             type="submit"
             className="button my-3 bg-secondary px-3 py-1 w-full rounded hover:bg-primHighlight hover:text-white"
+            disabled={loading}
           >
-            RUN IT{" "}
+            {loading ? "Loading..." : "RUN IT"}
           </button>
+
+          {/* Error Message */}
+          {error && (
+            <p className="text-red-500 mt-2">
+              {error || "An unexpected error occurred"}
+            </p>
+          )}
         </form>
       </div>
     </div>
