@@ -1,6 +1,5 @@
 import { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
 
 export interface AgentI {
   name: string;
@@ -18,7 +17,7 @@ const useForm = () => {
   const router = useRouter();
 
   const submitAgent = (name: string, description: string) => {
-    // this needs to be formatted to be used as a key in the backend Open ai fails with spaces in names
+    // This needs to be formatted to be used as a key in the backend Open ai fails with spaces in names
     const formattedName = name.replace(/\s+/g, "_");
     setAgents([...agents, { name: formattedName, description }]);
   };
@@ -44,8 +43,6 @@ const useForm = () => {
       communicationMethod: "",
       problem,
     };
-
-    router.push("/Simulation");
 
     try {
       const response = await axios.post("/api/simulation", data);
