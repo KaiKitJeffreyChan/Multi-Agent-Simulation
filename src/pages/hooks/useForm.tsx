@@ -14,8 +14,6 @@ const useForm = () => {
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
 
-  const router = useRouter();
-
   const submitAgent = (name: string, description: string) => {
     // This needs to be formatted to be used as a key in the backend Open ai fails with spaces in names
     const formattedName = name.replace(/\s+/g, "_");
