@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import Agent from "./components/Agent";
-import useForm from "./hooks/useForm";
-import Instructions from "./components/Instructions";
+import Agent from "../components/Agent";
+import useForm from "../hooks/useForm";
+import Instructions from "../components/Instructions";
 import { set } from "react-hook-form";
 
 const FormComponent: React.FC = () => {
