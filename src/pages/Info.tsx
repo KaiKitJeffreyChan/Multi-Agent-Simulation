@@ -8,8 +8,8 @@ const Info: React.FC = () => {
     <div className="sm:p-32 bg-primary h-full p-12 font-shareTechMono text-white">
       <div className="flex justify-between items-center">
         <h1 className="my-4 text-2xl">
-          Wow you were curious enought to press this!
           Wow you were curious enough to press this!
+        </h1>
         <button
           className="bg-secondary text-xs p-2 rounded"
           onClick={() => router.push("/Home")}
@@ -18,27 +18,28 @@ const Info: React.FC = () => {
         </button>
       </div>
       <div className="text-xs">
-        TLDR (your welcome): This is a multi-agent simulation where you can
         TLDR (you're welcome): This is a multi-agent simulation where you can
         customize multiple agents (create personalized versions of chatGPT or
         any other LLM), assign them a communication method, and give them a
         problem. The agents will then communicate with each other to solve the
         problem! The simulation will end when the problem is solved or the
         agents are unable to solve the problem.
+      </div>
 
       <h1 className="my-4">A more detailed dive</h1>
       <div className="text-xs">
         "These LLMs are so powerful, but I wish I could customize them, better
-        &quot;These LLMs are so powerful, but I wish I could customize them, better
-        yet, get them to work on something together.&quot; After stumbling upon the
-        idea of agents, I was really intrigued on the possibilities. If one agent
-        could do so much, what could multiple agents do? This is where the idea
-        of a multi-agent simulation came to be. The idea is simple, create
-        multiple agents, give them a problem, and let them communicate with each
-        other to solve the problem. The agents can be customized to use
-        different models, communication methods, and personalities. The
-        simulation will end when the problem is solved or the agents are unable
-        to solve the problem.
+        &quot;These LLMs are so powerful, but I wish I could customize them,
+        better yet, get them to work on something together.&quot; After
+        stumbling upon the idea of agents, I was really intrigued on the
+        possibilities. If one agent could do so much, what could multiple agents
+        do? This is where the idea of a multi-agent simulation came to be. The
+        idea is simple, create multiple agents, give them a problem, and let
+        them communicate with each other to solve the problem. The agents can be
+        customized to use different models, communication methods, and
+        personalities. The simulation will end when the problem is solved or the
+        agents are unable to solve the problem.
+      </div>
       <div className="text-xs py-3">
         As you could imagine, the possibilities are endless! You could create a
         team of engineers to solve a programming problem, a cast of screen
@@ -59,8 +60,9 @@ const Info: React.FC = () => {
       <ul className="list-disc pl-10 my-3 py-5 text-xs bg-secondary rounded text-secHighlight">
         <li>
           I must respond with exactly one of the options, without saying
-          I must respond with exactly one of the options, without saying
-          anything else [&quot;SPEAK&quot;, &quot;LISTEN&quot;, &quot;SPEAKWITHEDIT&quot;].
+          anything else [&quot;SPEAK&quot;, &quot;LISTEN&quot;,
+          &quot;SPEAKWITHEDIT&quot;].
+        </li>
         <li>What would I like to do next?</li>
         <li>I can see that this is the current solution:</li>
       </ul>
@@ -80,10 +82,12 @@ const Info: React.FC = () => {
       <div className="bg-secondary p-8 text-xs rounded text-secHighlight">
         <span>
           <div className="mb-3">
-            I must respond with exactly one of the options, without saying
-            I must respond with exactly one of the options, without saying
-            anything else [&quot;SPEAK&quot;, &quot;LISTEN&quot;, &quot;SPEAKWITHEDIT&quot;]. I'm going to read
-            what each option means and respond with what I want to do
+            I must respond with exactly one of the options, without saying I
+            must respond with exactly one of the options, without saying
+            anything else [&quot;SPEAK&quot;, &quot;LISTEN&quot;,
+            &quot;SPEAKWITHEDIT&quot;]. I'm going to read what each option means
+            and respond with what I want to do
+          </div>
           <span>Say "SPEAK" if:</span>
           <ul className="list-disc pl-5 my-3">
             <li>
