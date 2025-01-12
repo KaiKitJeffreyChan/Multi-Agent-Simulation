@@ -13,14 +13,13 @@ const useForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const submitAgent = (name: string, description: string) => {
-    // This needs to be formatted to be used as a key in the backend Open ai fails with spaces in names
     const formattedName = name.replace(/\s+/g, "_");
     setAgents([...agents, { name: formattedName, description }]);
   };
 
-  // Remove an agent from the list
   const removeAgent = (name: string, description: string) => {
     setAgents(
       agents.filter(
@@ -29,7 +28,6 @@ const useForm = () => {
     );
   };
 
-  // Submit form with dynamic extra data
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -44,6 +42,7 @@ const useForm = () => {
 
     try {
       const response = await axios.post("/api/simulation", data);
+      setIsSubmitted(true);
       return response.data;
     } catch (err: any) {
       setError(err.response?.data?.message || "An error occurred");
@@ -66,6 +65,7 @@ const useForm = () => {
     setName,
     description,
     setDescription,
+    isSubmitted,
   };
 };
 

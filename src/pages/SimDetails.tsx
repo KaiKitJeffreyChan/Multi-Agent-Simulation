@@ -22,6 +22,7 @@ const FormComponent: React.FC = () => {
     handleSubmit,
     setName,
     setDescription,
+    isSubmitted,
   } = useForm();
 
   const router = useRouter();
@@ -36,6 +37,13 @@ const FormComponent: React.FC = () => {
       return () => clearTimeout(timer);
     }
   }, [message]);
+
+  // Handle navigation after form submission
+  useEffect(() => {
+    if (isSubmitted && !loading && !error) {
+      router.push("/Simulation");
+    }
+  }, [isSubmitted, loading, error, router]);
 
   return (
     <div className="relative min-h-screen bg-primary">
@@ -65,9 +73,7 @@ const FormComponent: React.FC = () => {
           onSubmit={(event) => {
             event.preventDefault();
             if (agents.length >= 2 && problem) {
-              handleSubmit(event).then(() => {
-                router.push("/Simulation");
-              });
+              handleSubmit(event);
             } else if (agents.length < 2) {
               setMessage("Please add at least 2 agents!");
             } else if (!problem) {
@@ -105,13 +111,11 @@ const FormComponent: React.FC = () => {
                   ></textarea>
                 </div>
                 <div className="flex justify-between items-center">
-                  {message && (
-                    <div className="text-xs bg-red-500 px-2">{message}</div>
-                  )}
+                  <div className="text-xs bg-red-500 px-2">{message}</div>
                   <button
                     type="button"
                     onClick={() => {
-                      if (name.trim() && description.trim()) {
+                      if (name && description) {
                         submitAgent(name, description);
                         setName("");
                         setDescription("");
@@ -139,22 +143,12 @@ const FormComponent: React.FC = () => {
               ></textarea>
             </div>
           </div>
-
-          {/* Submit Button */}
           <button
             type="submit"
             className="button my-3 bg-secondary px-3 py-1 w-full rounded hover:bg-primHighlight hover:text-white"
-            disabled={loading}
           >
-            {loading ? "Loading..." : "RUN IT"}
+            RUN IT
           </button>
-
-          {/* Error Message */}
-          {error && (
-            <p className="text-red-500 mt-2">
-              {error || "An unexpected error occurred"}
-            </p>
-          )}
         </form>
       </div>
     </div>
