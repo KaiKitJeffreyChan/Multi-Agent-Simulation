@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { useRouter } from "next/router";
 
 export interface AgentI {
   name: string;
@@ -14,13 +13,6 @@ const useForm = () => {
   const [error, setError] = useState<string | null>(null);
   const [name, setName] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-
-  const [isBrowser, setIsBrowser] = useState(false);
-  const router = isBrowser ? useRouter() : null;
-
-  useEffect(() => {
-    setIsBrowser(true);
-  }, []);
 
   const submitAgent = (name: string, description: string) => {
     const formattedName = name.replace(/\s+/g, "_");
@@ -49,9 +41,6 @@ const useForm = () => {
 
     try {
       const response = await axios.post("/api/simulation", data);
-      if (router) {
-        router.push("/Simulation");
-      }
       return response.data;
     } catch (err: any) {
       setError(err.response?.data?.message || "An error occurred");
