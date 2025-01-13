@@ -1,6 +1,6 @@
 # 🎮 Multi-Agent Simulation Framework 🚀  
 
-A Java-based toolkit for building simulations with interacting agents. Whether it's a city, jungle, or robot uprising, bring your ideas to life!  
+A fun app I built for building simulations with interacting agents using Typescript.
 
 ---
 
@@ -21,26 +21,3 @@ A Java-based toolkit for building simulations with interacting agents. Whether i
    git clone https://github.com/KaiKitJeffreyChan/Multi-Agent-Simulation.git
 Build the project with Maven or Gradle.
 Add it to your project and start coding!
-🕹️ Quick Example
-Define an agent:
-
-java
-Copy code
-public class MyAgent extends Agent {
-    @Override
-    public void initialize() {
-        System.out.println("Agent initialized!");
-    }
-
-    @Override
-    public void processEvent(Event event) {
-        System.out.println("Processing: " + event);
-    }
-}
-Set up the simulation:
-
-java
-Copy code
-Environment env = new Environment();
-env.addAgent(new MyAgent());
-env.runSimulation();
