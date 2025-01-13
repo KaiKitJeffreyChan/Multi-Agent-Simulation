@@ -14,10 +14,4 @@ A fun app I built for building simulations with interacting agents using Typescr
 
 ---
 
-## 📦 Getting Started  
-
-1. Clone the repo:  
-   ```bash
-   git clone https://github.com/KaiKitJeffreyChan/Multi-Agent-Simulation.git
-Build the project with Maven or Gradle.
-Add it to your project and start coding!
+## Take a look here! [MultiAgentSim](https://multiagentsim.co)
