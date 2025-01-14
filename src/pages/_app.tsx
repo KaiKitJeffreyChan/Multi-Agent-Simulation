@@ -2,6 +2,7 @@ import type { AppType } from "next/app";
 import "../styles/globals.css";
 import Head from "next/head";
 import React from "react";
+import { Analytics } from "@vercel/analytics/react";
 
 const MyApp: AppType = ({ Component }) => {
   return (
@@ -45,6 +46,7 @@ const MyApp: AppType = ({ Component }) => {
         />
       </Head>
       <Component />
+      <Analytics />
     </>
   );
 };
