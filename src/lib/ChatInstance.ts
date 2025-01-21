@@ -44,13 +44,20 @@ export class ChatInstance {
 
   private LISTEN_USER_PROMPT = `What would I like to do next? Respond with one of the options ["SPEAK", "LISTEN", "SPEAKWITHEDIT"]`;
 
-  private ADD_SOLUTION_PROMPT = `What would I like to make the solution? I have to remember what I am going to add now is the solution to the problem. 
-    If this does not directly answer the question I should not say it, I will only return the solution itself. Im not going to explain the solution, ill just say it.
+  private ADD_SOLUTION_PROMPT = `
+    What is the new solution I want to contribute?
+    I must remember that the response I give now will completely replace the current solution. This response should be a finalized, self-contained solution to the problem, leaving no gaps or unanswered parts.
+
+    Rules for crafting the new solution:
+    - Direct and Complete: The solution must directly address every aspect of the problem. If any part is unclear or incomplete, I will ensure it is resolved now.
+    - Relevant Only: I will not add anything unrelated or unnecessary to the problem. Every word must contribute meaningfully to the solution.
+    - Final Form: The response must be ready for immediate use. It should require no further refinement, explanation, or rewording.
     
-    Examples:
-    - If the problem asks for a story, I will now say exactly what the story is.
-    - If the problem is a programming question, I will now say the code that solves the problem.
-    - If the problem is to curate a menu, I will now say the menu.
+    Examples for clarity:
+    - If the problem asks for a story, I will now write the complete and final version of the story.
+    - If the problem is a programming task, I will now write the exact code that solves it, ensuring it is ready to execute.
+    - If the problem involves designing a menu, I will now present the finalized menu, listing all items.
+    - If the problem requires creating a workflow, I will now provide the complete step-by-step process in its final form.
     `;
 
   constructor({
