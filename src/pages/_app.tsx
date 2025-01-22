@@ -1,10 +1,10 @@
-import type { AppType } from "next/app";
-import "../styles/globals.css";
+import { AppProps } from "next/app";
 import Head from "next/head";
+import "../styles/globals.css";
 import React from "react";
 import { Analytics } from "@vercel/analytics/react";
 
-const MyApp: AppType = ({ Component }) => {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -22,13 +22,19 @@ const MyApp: AppType = ({ Component }) => {
         />
         <meta name="author" content="Kai Kit Jeffrey Chan" />
 
-        {/* <meta property="og:type" content="website" />
+        <meta property="og:type" content="website" />
         <meta property="og:title" content="Multi-Agent Simulation" />
         <meta property="og:description" content="Multi-Agent Simulation" />
-        <meta property="og:image" content="/path/to/your/image.jpg" />
-        <meta property="og:url" content="https://yourwebsite.com" />
+        <link
+          rel="icon"
+          href="/favicon.png"
+          type="image/<generated>"
+          sizes="<generated>"
+        />
+        {/* <meta property="og:image" content="/images/robot_img.png" /> */}
+        <meta property="og:url" content="www.multiagentsim.co" />
 
-        <meta name="twitter:card" content="summary_large_image" />
+        {/* <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Multi-Agent Simulation" />
         <meta name="twitter:description" content="Multi-Agent Simulation" />
         <meta name="twitter:image" content="/path/to/your/image.jpg" />
@@ -45,10 +51,10 @@ const MyApp: AppType = ({ Component }) => {
           rel="stylesheet"
         />
       </Head>
-      <Component />
+      <Component {...pageProps} />
       <Analytics />
     </>
   );
-};
+}
 
 export default MyApp;
