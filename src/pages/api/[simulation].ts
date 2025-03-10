@@ -24,6 +24,8 @@ const generateAgent = (
   });
 };
 
+const generateAgentPrompt = (modelType: "OpenAIChat" | "GeminiAIChat") => {};
+
 const getIncomingMessage = (
   speaker: Intent,
   new_message: string,
@@ -102,7 +104,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponseServerIo) => {
 
         for (const castMember of castMembers) {
           // Need this for Gemini will fail otherwise
-          await new Promise((resolve) => setTimeout(resolve, 8000));
+          // await new Promise((resolve) => setTimeout(resolve, 8000));
           if (castMember !== speaker.castMember) {
             const nextAction: string = await castMember.listen(
               speaker.castMember.getPersonality().name,
