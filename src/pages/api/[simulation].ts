@@ -16,13 +16,15 @@ const generateAgent = (
 ) => {
   // const model =
   //   modelType === "OpenAIChat" ? new OpenAIChat() : new GeminiAIChat();
-  const model = new OpenAIChat();
+  const model = new GeminiAIChat();
   return new ChatInstance({
     personality,
     problem,
     model,
   });
 };
+
+const generateAgentPrompt = (modelType: "OpenAIChat" | "GeminiAIChat") => {};
 
 const getIncomingMessage = (
   speaker: Intent,

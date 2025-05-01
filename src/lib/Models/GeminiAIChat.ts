@@ -10,13 +10,13 @@ class GeminiAIChat extends Model {
   constructor(temperature?: number, maxOutputTokens: number = 8192) {
     super();
     this.maxOutputTokens = maxOutputTokens;
-    const apiKey = process.env.GEMINI_API_KEY;
+    const apiKey = process.env.GEMINI_2_API_KEY;
     if (!apiKey) {
       throw new Error("GEMINI_API_KEY environment variable is not set.");
     }
     this.genAI = new GoogleGenerativeAI(apiKey);
     this.model = this.genAI.getGenerativeModel({
-      model: "gemini-1.5-flash",
+      model: "gemini-2.0-flash-lite",
       generationConfig: {
         temperature: temperature || Math.random() * 0.5 + 0.5,
       },

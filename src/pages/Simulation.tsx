@@ -52,8 +52,8 @@ const Simulation: React.FC = () => {
 
   return (
     <div className="h-full bg-primary font-shareTechMono text-white ">
-      <div className="grid grid-cols-[50%_50%]">
-        <div className="h-screen col-span-1 overflow-hidden p-10">
+      <div className="grid sm:grid-cols-2 grid-rows-2 sm:grid-rows-1 h-screen">
+        <div className="sm:h-full sm:col-span-1 row-span-1 sm:row-span-1 overflow-hidden p-10">
           <div
             className="overflow-y-auto no-scrollbar bg-secondary h-full rounded"
             id="messageContainer"
@@ -74,7 +74,7 @@ const Simulation: React.FC = () => {
           </div>
         </div>
 
-        <div className="col-span-1 p-10">
+        <div className="col-span-1 sm:col-span-1 row-span-1 sm:row-span-1 sm:h-full p-10">
           <h2>Solution:</h2>
           <div className="overflow-auto no-scrollbar text-wrap my-5">
             <p className="text-xs">

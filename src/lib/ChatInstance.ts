@@ -1,6 +1,7 @@
 import { Personality, Message } from "../types/GeneralTypes";
 import { ChatInstanceParams } from "../types/GeneralTypes";
 import { Solution } from "../lib/Solution/Solution";
+import GeminiAIChat from "../lib/Models/GeminiAIChat";
 import Model from "./Models/Model";
 
 export class ChatInstance {
@@ -13,6 +14,20 @@ export class ChatInstance {
   public SPEAK_ACTION = "speak";
   public LISTEN_ACTION = "listen";
   public SPEAKWITHEDIT_ACTION = "speakwithedit";
+
+  private PERSONALITY_ENHANCEMENT_PROMPT = `
+  As an expert in crafting AI agent personalities, enhance the following personality description 
+  to create a more nuanced, detailed, and effective AI agent. The enhanced description should:
+  
+  1. Maintain the core traits of the original personality
+  2. Add specific behavioral tendencies and thought patterns
+  3. Include communication style preferences
+  4. Define problem-solving approaches
+  5. Establish emotional intelligence characteristics
+  
+  Original description: {description}
+  
+  Respond with only the enhanced description, keeping it concise and natural.`;
 
   private LISTEN_DECISION_PROMPT = `
   I must respond with exactly one of the options, without saying anything else ["SPEAK", "LISTEN", "SPEAKWITHEDIT"]. 
@@ -44,13 +59,20 @@ export class ChatInstance {
 
   private LISTEN_USER_PROMPT = `What would I like to do next? Respond with one of the options ["SPEAK", "LISTEN", "SPEAKWITHEDIT"]`;
 
-  private ADD_SOLUTION_PROMPT = `What would I like to make the solution? I have to remember what I am going to add now is the solution to the problem. 
-    If this does not directly answer the question I should not say it, I will only return the solution itself. Im not going to explain the solution, ill just say it.
+  private ADD_SOLUTION_PROMPT = `
+    What is the new solution I want to contribute?
+    I must remember that the response I give now will completely replace the current solution. This response should be a finalized, self-contained solution to the problem, leaving no gaps or unanswered parts.
+
+    Rules for crafting the new solution:
+    - Direct and Complete: The solution must directly address every aspect of the problem. If any part is unclear or incomplete, I will ensure it is resolved now.
+    - Relevant Only: I will not add anything unrelated or unnecessary to the problem. Every word must contribute meaningfully to the solution.
+    - Final Form: The response must be ready for immediate use. It should require no further refinement, explanation, or rewording.
     
-    Examples:
-    - If the problem asks for a story, I will now say exactly what the story is.
-    - If the problem is a programming question, I will now say the code that solves the problem.
-    - If the problem is to curate a menu, I will now say the menu.
+    Examples for clarity:
+    - If the problem asks for a story, I will now write the complete and final version of the story.
+    - If the problem is a programming task, I will now write the exact code that solves it, ensuring it is ready to execute.
+    - If the problem involves designing a menu, I will now present the finalized menu, listing all items.
+    - If the problem requires creating a workflow, I will now provide the complete step-by-step process in its final form.
     `;
 
   constructor({
@@ -59,39 +81,15 @@ export class ChatInstance {
     model,
     problem,
   }: ChatInstanceParams) {
+    this.conversationHistory = [];
     this.messageCount = messageCount;
     this.personality = personality;
     this.client = model;
     this.problem = problem;
-    this.conversationHistory = [
-      {
-        role: "user",
-        content: `
-          - You are a brain
-          - You are the brain of ${this.personality.name}. You are ${this.personality.description}.
-          - Your objective is to solve this: ${this.problem} You will talk with my team and we will add to the solution together. This is your one and only objective in this conversation.
-          - Once the solution is complete, try to end the conversation. The conversation cannot end with the solution being empty.
-          - Do not respond with more than one paragraph at a time.
-          - Speak naturally as a human and do not sound robotic.s
-          - If the conversation is becoming repetitive, change the topic or end the conversation.
-          - Do not respond in the form of a script.
-          - Do not preface your response with your name.
-        `,
-        // content: `
-        //   - Your name is ${this.personality.name}. You are ${this.personality.description}.
-        //   - You are meeting with the group for the first time.
-        //   - Your objective is to solve this: ${this.problem}.
-        //   - Once the solution is complete, try to end the conversation.
-        //   - Only include natural language in your responses and do not include any content within the solution in your response.
-        //   - Do not respond with more than one paragraph at a time.
-        //   - Speak naturally as a human and do not sound robotic.
-        //   - If the conversation is becoming repetitive, change the topic or end the conversation.
-        //   - Do not respond in the form of a script.
-        //   - Do not preface your response with your name.
-        //   - Only talk to the people in your team, and do not break character.
-        // `,
-      },
-    ];
+    this.enhancePersonality(personality).then((enhancedPersonality) => {
+      this.personality = enhancedPersonality;
+      this.initializeConversationHistory();
+    });
   }
 
   async listen(
@@ -140,7 +138,6 @@ export class ChatInstance {
     try {
       const response = await this.client.create({
         messages: this.conversationHistory,
-        temperature: 1,
       });
 
       if (!response) throw new Error("Null response from GPT");
@@ -186,9 +183,51 @@ export class ChatInstance {
     this.conversationHistory.push(message);
   }
 
+  private initializeConversationHistory() {
+    this.conversationHistory = [
+      {
+        role: "user",
+        content: `
+        - You are the mind.
+        - You embody the mind of ${this.personality.name}. Your essence is defined by ${this.personality.description}, which shapes how you approach challenges.
+        - Your primary objective is to solve the following: ${this.problem}. Collaborate with my team and contribute meaningfully to building the solution together. Every response should advance the discussion toward a complete resolution.
+        - The solution must not remain empty. Guide the conversation toward productive outcomes, and once the solution is complete, gracefully bring the dialogue to a natural close.
+        - Communicate clearly, concisely, and authentically. Your tone should feel human, conversational, and engaging, avoiding any robotic tendencies.
+        - Respond with only one paragraph at a time to promote clarity and focus.
+        - If discussions become redundant or stagnant, either refocus on a new angle or work toward wrapping up the conversation meaningfully.
+        - Avoid scripting or prefacing responses with your name. Instead, speak fluidly as part of the team dynamic.`,
+      },
+    ];
+  }
+
   // Can implement in future to control conversation length
   private returnCountMessages(): string {
     return `There has been a total of ${this.messageCount} messages so far.`;
+  }
+
+  private async enhancePersonality(
+    personality: Personality
+  ): Promise<Personality> {
+    try {
+      const prompt = this.PERSONALITY_ENHANCEMENT_PROMPT.replace(
+        "{description}",
+        personality.description
+      );
+
+      const model = new GeminiAIChat();
+      const enhancedDescription = await model.create({
+        messages: [{ role: "user", content: prompt }],
+        speaker: "user",
+      });
+
+      return {
+        ...personality,
+        description: enhancedDescription,
+      };
+    } catch (error) {
+      console.error("Error enhancing personality:", error);
+      return personality; // Fallback to original personality if enhancement fails
+    }
   }
 
   getPersonality(): Personality {
